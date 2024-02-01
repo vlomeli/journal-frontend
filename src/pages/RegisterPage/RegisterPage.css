@@ -1,0 +1,17 @@
+.register-page-container {
+    height:100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.register-form-container {
+    display: flex;
+    flex-direction: column;
+    height: 50%;
+}
+
+.username-input, .email-input, .password-input {
+    margin-bottom: 15px;
+}
