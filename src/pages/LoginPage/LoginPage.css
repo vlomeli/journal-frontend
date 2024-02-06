@@ -1,0 +1,17 @@
+.login-page-container {
+    height:100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-form-container {
+    display: flex;
+    flex-direction: column;
+    height: 50%;
+}
+
+.username-input, .password-input, .login-button {
+    margin-bottom: 15px;
+}

@@ -12,6 +12,6 @@
     height: 50%;
 }
 
-.username-input, .email-input, .password-input {
+.username-input, .email-input, .password-input, .register-button {
     margin-bottom: 15px;
 }

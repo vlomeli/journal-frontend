@@ -1,5 +1,6 @@
 
 import { useState} from 'react';
+import {useNavigate, Link} from 'react-router-dom';
 
 import './RegisterPage.css';
 
@@ -9,23 +10,34 @@ const RegisterPage = () => {
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+
+    const navigate = useNavigate();
     
     const handleEmailChange = (event) => {
        setEmail(event.target.value);
-    }
-
-   const handleUsernameChange = (event) => {
-        setUsername(event.target.value);
     }
 
     const handlePasswordChange = (event) => {
         setPassword(event.target.value);
     }
 
+    const handleUsernameChange = (event) => {
+        setUsername(event.target.value);
+    }
+
    const handleRegisterClick = async () => {
-      const data = await register({email, username, password});
+      const { jwt, success } = await register({email, password, username});
+
+        if (success) { 
+            localStorage.setItem('journal-app-jwt', jwt);
+            navigate('/home');
+        }else {
+            alert('Error registering')
+        }
+
+        
       
-      console.log(data)
+      //console.log(data)
     }
 
     return (
@@ -40,17 +52,19 @@ const RegisterPage = () => {
                         placeholder='Email' />
 
                     <input
-                        onChange={(event) => handleUsernameChange(event)}
-                        className='username-input' 
-                        placeholder='Username' />
-
-                    <input
                         onChange={(event) =>  handlePasswordChange(event)} 
                         className='password-input'
                         placeholder='Password'
                         type='password' />
 
-                    <button onClick={() => handleRegisterClick()}> Log In</button>
+                    <input
+                        onChange={(event) => handleUsernameChange(event)}
+                        className='username-input' 
+                        placeholder='Username' />
+
+                    <button className='register-button' onClick={() => handleRegisterClick()}> register </button>
+
+                    <Link to='/'>Click here to log in</Link>
                     
             </div>
         </div>
