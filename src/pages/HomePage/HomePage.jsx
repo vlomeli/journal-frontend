@@ -2,7 +2,7 @@ import { useState, useEffect} from 'react';
 import { removeJwt } from '../../ApiServices/JwtService';
 import { useNavigate} from 'react-router-dom';
 
-import { createEntry, getUserEntries } from '../../ApiServices/JournalService';
+import { createEntry, deleteEntry, getUserEntries } from '../../ApiServices/JournalService';
 
 import Navbar from '../../components/Navbar/Navbar';
 
@@ -17,9 +17,14 @@ const HomePage = () => {
     const [ entries, setEntries ] = useState ([]);
 
 // allows you to render entries when you open home page
+
+
     useEffect(() => {
-        const fetchEntries = async () => {
-            try {
+        fetchEntries();
+    }, []);
+
+    const fetchEntries = async () => {
+        try {
             const fetchedEntries = await getUserEntries();
             console.log('entries, fetchedEntries', fetchedEntries);
             setEntries(fetchedEntries.entries);
@@ -28,23 +33,28 @@ const HomePage = () => {
         }
     }
 
-        fetchEntries();
-    }, []);
-
 // allows to create a new entry
-    const handleCreateEntry = () => {
+    const handleCreateEntry = async () => {
         console.log({
             newTitleValue,
             newContentValue,
             newMoodValue
         })
-        createEntry({
+        await createEntry({
             newTitleValue,
             newContentValue,
             newMoodValue
         });
+        // rerenders when submitted
+        fetchEntries();
     }
     
+    const handleDeleteEntry = async (entryId) => {
+        await deleteEntry(entryId);
+
+        fetchEntries();
+    }
+
 // takes you to login page when you click
     const navigate = useNavigate()
 
@@ -72,6 +82,8 @@ const HomePage = () => {
             <p> Title: {entry.Title}</p>
             <p> Content: {entry.Content}</p>
             <p> Mood: {entry.Mood}</p>
+
+            <button onClick={() => handleDeleteEntry(entry.EntryID)}> Delete </button>
         </div>
        ));
           
