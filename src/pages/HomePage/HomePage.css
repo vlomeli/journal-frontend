@@ -49,7 +49,7 @@
   
   .entries-container {
     flex: 0 0 60%; /* Take 60% of available space */
-    background-color: beige;
+    background-color:rgb(218, 199, 242);
     padding: 20px;
     overflow-y: auto;
     margin: 0; /* Remove margin */

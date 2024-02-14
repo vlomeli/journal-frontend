@@ -35,9 +35,6 @@ const RegisterPage = () => {
             alert('Error registering')
         }
 
-        
-      
-      //console.log(data)
     }
 
     return (
