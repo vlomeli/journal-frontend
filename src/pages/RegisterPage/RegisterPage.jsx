@@ -61,7 +61,7 @@ const RegisterPage = () => {
 
                     <button className='register-button' onClick={() => handleRegisterClick()}> register </button>
 
-                    <Link to='/'>Click here to log in</Link>
+                    <Link to='/'>Already have an account? Log In</Link>
                     
             </div>
         </div>

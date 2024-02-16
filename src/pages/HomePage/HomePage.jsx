@@ -3,6 +3,7 @@ import { removeJwt } from '../../ApiServices/JwtService';
 import { useNavigate} from 'react-router-dom';
 import { createEntry, deleteEntry, getUserEntries, updateEntry } from '../../ApiServices/JournalService';
 import Navbar from '../../components/Navbar/Navbar';
+import Cal from '../../components/Calendar/Calendar';
 import './HomePage.css';
 
 const HomePage = () => {
@@ -93,6 +94,12 @@ const HomePage = () => {
                         <input type="text" value={newContentValue} onChange={(e) => setNewContentValue(e.target.value)} />
                         <input type="text" value={newMoodValue} onChange={(e) => setNewMoodValue(e.target.value)} />
                         <button onClick={() => handleSaveEntry(entry.EntryID, { title: newTitleValue, content: newContentValue, mood: newMoodValue })}>Save</button>
+                        <button onClick={() => {
+                        setNewTitleValue(entry.Title);
+                        setNewContentValue(entry.Content);
+                        setNewMoodValue(entry.Mood);
+                        setEditEntryId(null);
+                    }}>Cancel</button>
                     </div>
                 );
             } else {
@@ -137,19 +144,25 @@ const HomePage = () => {
             <label htmlFor='new-entry-mood-input'>Mood:</label>
             <input onChange={(event) => setNewMoodValue(event.target.value)} id='new-entry-mood-input' type='text' />
             
-            <button onClick={handleCreateEntry} className='logout-button'> New Entry </button>
+            <button onClick={handleCreateEntry} className='blue-btn new-entry-btn'> New Entry </button>
           </div>
-    
+            
+        
           <div className='entries-container'>
             <h1> All ENTRIES</h1>
             {renderEntriesList()}
           </div>
         </div>
     
+            <div>
+             <Cal/>
+            </div>
+
         <div className='logout-button-container'>
-          <button className='logout-button' onClick={LogOut}>LOG OUT</button>
+          <button className=' blue-btn logout-btn' onClick={LogOut}>LOG OUT</button>
         </div>
       </div>
+
     );
 }
 

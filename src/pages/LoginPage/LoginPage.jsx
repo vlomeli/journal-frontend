@@ -52,7 +52,7 @@ const LoginPage = () => {
 
                 <button className='login-button' onClick={() => handleLoginClick()}> Login </button>
                     
-                <Link to='/register'> Click here to register</Link>
+                <Link to='/register'> Don't have an account? Sign Up </Link>
             </div>
         </div>
     )

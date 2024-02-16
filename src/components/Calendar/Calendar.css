@@ -1,0 +1,29 @@
+.calendar-container {
+    padding: 20px; /* Add padding to create space between the calendar and the shadow outline */
+  }
+  
+  .react-calendar {
+    border-radius: 10px; /* Adjust the border-radius value to match the container's border-radius */
+    border: 0;
+    overflow: hidden; /* Hide the overflow to prevent the shadow from being cut off */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .react-calendar__navigation {
+    border-radius: 10px; /* Adjust the border-radius value to match the container's border-radius */
+  }
+
+.react-calendar__navigation__label__labelText {
+    font-size: 18px;
+  }
+
+
+.calendar-tile {
+    background-color: rgb(240, 240, 250);
+  }
+
+
+.current-day {
+    background-color: rgb(215, 18, 255);
+    color:white;
+}

@@ -1,28 +1,3 @@
-/* 
-.logout-button-container {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    padding: 20px;
-  }
-  
-  .logout-button {
-    background-color: rgb(114, 178, 237); 
-    border: none;
-    color: white;
-    width: 200px; 
-    height: 50px; 
-    font-size: 20px; 
-  }
-
-  .entries-container {
-    background-color: beige;
-    width: 60%; 
-    margin-left: auto; 
-    padding: 200px; 
-  }
-
-  */
 
   .home-page-container {
     display: flex;
@@ -46,9 +21,22 @@
     display: flex;
     flex-direction: column; /* Stack inputs in a column */
   }
+
+  .inputs-container label {
+    margin:4px;
+  }
+
+  .inputs-container input {
+    width: 300px; /* Adjust the width value to make the input box wider */
+    height: 50px; /* Adjust the height value to make the input box taller */
+  }
+
+  .new-entry-btn {
+    margin-top: 20px;
+  }
   
   .entries-container {
-    flex: 0 0 60%; /* Take 60% of available space */
+    flex: 0 0 70%; /* Take 60% of available space */
     background-color:rgb(218, 199, 242);
     padding: 20px;
     overflow-y: auto;
@@ -61,11 +49,11 @@
     width: auto;
   }
   
-  .logout-button {
+   .blue-btn {
     background-color: rgb(114, 178, 237); 
     border: none;
     color: white;
     width: 200px; 
-    height: 50px; 
+    height: 45px; 
     font-size: 20px;
   }
