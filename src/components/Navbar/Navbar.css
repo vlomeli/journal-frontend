@@ -1,17 +1,4 @@
-
 *{
     margin: 0px; 
 }
 
-.navbar-container {
-    background-color: rgb(97, 96, 153);
-    color: white;
-    height: 75px;
-   
-}
-
-.navbar-container h1 {
-    padding-left: 30px;
-    padding-top: 15px;
-    padding-bottom: 15px;
-}

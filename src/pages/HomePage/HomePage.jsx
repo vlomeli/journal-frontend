@@ -129,40 +129,33 @@ const HomePage = () => {
 // all that is rendered on the page
     return (
         <div className='home-page-container'>
-        <div className='navbar-container'>
-          <Navbar />
+      <div className='navbar-container'>
+        <Navbar />
+      </div>
+      <div className='left-column'>
+        <div className='inputs-container'>
+          <label htmlFor='new-entry-title-input'>Title:</label>
+          <input onChange={(event) => setNewTitleValue(event.target.value)} id='new-entry-title-input' type='text' />
+          <label htmlFor='new-entry-content-input'>Content:</label>
+          <input onChange={(event) => setNewContentValue(event.target.value)} id='new-entry-content-input' type='text' />
+          <label htmlFor='new-entry-mood-input'>Mood:</label>
+          <input onChange={(event) => setNewMoodValue(event.target.value)} id='new-entry-mood-input' type='text' />
+          <button onClick={handleCreateEntry} className='blue-btn new-entry-btn'> NEW ENTRY </button>
         </div>
-    
-        <div className="content-container">
-          <div className='inputs-container'>
-            <label htmlFor='new-entry-title-input'>Title:</label>
-            <input onChange={(event) => setNewTitleValue(event.target.value)} id='new-entry-title-input' type='text' />
-    
-            <label htmlFor='new-entry-content-input'>Content:</label>
-            <input onChange={(event) => setNewContentValue(event.target.value)} id='new-entry-content-input' type='text' />
-    
-            <label htmlFor='new-entry-mood-input'>Mood:</label>
-            <input onChange={(event) => setNewMoodValue(event.target.value)} id='new-entry-mood-input' type='text' />
-            
-            <button onClick={handleCreateEntry} className='blue-btn new-entry-btn'> New Entry </button>
-          </div>
-            
-        
-          <div className='entries-container'>
-            <h1> All ENTRIES</h1>
-            {renderEntriesList()}
-          </div>
+        <div className='calendar-container'>
+          <Cal />
         </div>
-    
-            <div>
-             <Cal/>
-            </div>
-
         <div className='logout-button-container'>
-          <button className=' blue-btn logout-btn' onClick={LogOut}>LOG OUT</button>
+          <button className='blue-btn logout-btn' onClick={LogOut}>LOG OUT</button>
         </div>
       </div>
-
+      <div className='right-column'>
+        <div className='entries-container'>
+          <h1> All ENTRIES</h1>
+          {renderEntriesList()}
+        </div>
+      </div>
+    </div>
     );
 }
 

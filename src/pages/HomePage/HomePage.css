@@ -1,59 +1,93 @@
+.home-page-container {
+  display: grid;
+  grid-template-rows: auto  1fr; /* Navbar takes up auto height, rest of the content takes up remaining height */
+  grid-template-columns:  30%  70%; /* Left column takes up  30%, right column takes up  70% */
+  height:  100vh; /* Full viewport height */
+}
 
-  .home-page-container {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    height: 100vh;
-  }
-  
-  .navbar-container {
-    flex: 0 0 auto;
-  }
-  
-  .content-container {
-    display: flex;
-    flex: 1;
-  }
-  
-  .inputs-container {
-    flex: 1;
-    padding: 20px;
-    display: flex;
-    flex-direction: column; /* Stack inputs in a column */
-  }
+.navbar-container {
+  grid-column:  1 / -1; /* Span the full width of the grid */
+  background-color: rgb(97,  96,  153);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Center the content vertically */
+  padding:  15px  30px; /* Adjust padding as needed */
+}
 
-  .inputs-container label {
-    margin:4px;
-  }
+.navbar-container h1 {
+  margin:  0; /* Remove default margin */
+}
 
-  .inputs-container input {
-    width: 300px; /* Adjust the width value to make the input box wider */
-    height: 50px; /* Adjust the height value to make the input box taller */
-  }
+.left-column {
+  grid-column:  1; /* Take up the first column */
+  display: flex;
+  flex-direction: column;
+  height:  100%; /* Take up full height */
+}
 
-  .new-entry-btn {
-    margin-top: 20px;
-  }
-  
-  .entries-container {
-    flex: 0 0 70%; /* Take 60% of available space */
-    background-color:rgb(218, 199, 242);
-    padding: 20px;
-    overflow-y: auto;
-    margin: 0; /* Remove margin */
-  }
-  
-  .logout-button-container {
-    padding: 20px;
-    align-self: flex-start;
-    width: auto;
-  }
-  
-   .blue-btn {
-    background-color: rgb(114, 178, 237); 
-    border: none;
-    color: white;
-    width: 200px; 
-    height: 45px; 
-    font-size: 20px;
-  }
+.right-column {
+  grid-column:  2; /* Take up the second column */
+  display: flex;
+  flex-direction: column;
+  height:  100%; /* Take up full height */
+}
+.calendar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top:  20px;
+  padding-bottom:  20px;
+  background-color: lightyellow;
+}
+
+.inputs-container {
+  display: grid;
+  grid-template-columns:  1fr;
+  grid-gap:  10px;
+  padding:  20px;
+  background-color: lightgreen;
+}
+
+.inputs-container label {
+  display: block;
+  justify-self:center ;
+  margin-bottom:  5px;
+}
+
+.inputs-container input {
+  width:  80%;
+  height: 50px;
+  padding:  5px;
+  justify-self: center;
+  border:  1px solid #ccc;
+  border-radius:  4px;
+}
+
+.inputs-container .new-entry-btn {
+  grid-column:  1;
+  justify-self: center;
+  margin-top:  20px;
+}
+
+.entries-container {
+  padding: 20px;
+  background-color: rgb(218, 199, 242);
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.logout-button-container {
+  padding: 20px;
+  align-self: center;
+  width: auto;
+}
+
+.blue-btn {
+  background-color: rgb(114, 178, 237);
+  border: none;
+  color: white;
+  width: 200px;
+  height: 45px;
+  font-size: 20px;
+}
