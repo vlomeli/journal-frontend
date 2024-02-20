@@ -1,4 +1,53 @@
 *{
     margin: 0px; 
+} 
+
+.search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-left: 950px; /* This will push the search container to the right */
+    border: none;
 }
 
+#search-bar {
+width:  300px; /* Increase the width of the search bar */
+padding:  15px  30px; /* Increase the padding to make the text area larger */
+background-color: black;
+color: white;
+border: none; 
+border-radius: 10px;
+}
+
+#search-bar:focus {
+    outline: none;
+}
+
+#search-bar::placeholder { /* Standard syntax */
+    color: white;
+    font-size: 17px;
+}
+
+#search-bar::-webkit-input-placeholder { /* Chrome, Safari, and Opera */
+    color: white;
+}
+
+#search-bar::-moz-placeholder { /* Firefox  19+ */
+    color: white;
+    opacity:  1; /* Firefox adds a lower opacity to the placeholder, so we use opacity:  1 to fix this */
+}
+
+#search-bar:-ms-input-placeholder { /* Internet Explorer  10-11 */
+    color: white;
+}
+
+#search-bar::-ms-input-placeholder { /* Microsoft Edge */
+    color: white;
+}
+
+#search-icon {
+    position: absolute;
+    right: 10px; /* Adjust this value to position the image */
+    width: 30px; /* Adjust this value to fit your image */
+    height: 30px; /* Adjust this value to fit your image */
+}

@@ -13,9 +13,12 @@
   justify-content: space-between;
   align-items: center; /* Center the content vertically */
   padding:  15px  30px; /* Adjust padding as needed */
+  height: 50px;
 }
 
 .navbar-container h1 {
+  font-size: 25px;
+  width:  300px;
   margin:  0; /* Remove default margin */
 }
 
@@ -77,6 +80,24 @@
   flex-grow: 1;
 }
 
+.entries-container h1{
+  color: white;
+  display: flex;
+  justify-content: center;
+  padding-top: 30px;
+  padding-bottom: 40px;
+}
+
+.entry {
+  border:  1px solid #ccc; /* Add a border around each entry */
+  padding:  10px; /* Add some padding inside each entry */
+  margin-bottom:  10px; /* Add some space between each entry */
+  border-radius:  5px; /* Round the corners of each entry */
+  background-color: rgb(97,  96,  153);
+  color: white;
+
+}
+
 .logout-button-container {
   padding: 20px;
   align-self: center;
@@ -91,3 +112,4 @@
   height: 45px;
   font-size: 20px;
 }
+

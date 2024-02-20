@@ -104,7 +104,7 @@ const HomePage = () => {
                 );
             } else {
                 return (
-                    <div key={entry.EntryID}>
+                    <div key={entry.EntryID} className='entry'>
                         <p>Date: {new Date(entry.DateCreated).toLocaleDateString(undefined, { month: 'numeric', day: 'numeric', year: '2-digit' })} {' '}
                             {new Date(entry.DateCreated).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
                         <p> Title: {entry.Title}</p>
