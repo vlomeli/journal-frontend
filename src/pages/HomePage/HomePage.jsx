@@ -1,6 +1,6 @@
-import { useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { removeJwt } from '../../ApiServices/JwtService';
-import { useNavigate} from 'react-router-dom';
 import { createEntry, deleteEntry, getUserEntries, updateEntry } from '../../ApiServices/JournalService';
 import Navbar from '../../components/Navbar/Navbar';
 import Cal from '../../components/Calendar/Calendar';
@@ -11,9 +11,9 @@ const HomePage = () => {
     const [newContentValue, setNewContentValue] = useState('');
     const [newMoodValue, setNewMoodValue] = useState('');
     const [editEntryId, setEditEntryId] = useState(null);
-    const [ entries, setEntries ] = useState ([]);
+    const [entries, setEntries] = useState([]);
+    const [expandedEntries, setExpandedEntries] = useState({});
 
-// allows you to render entries when you open home page
     useEffect(() => {
         fetchEntries();
     }, []);
@@ -28,7 +28,6 @@ const HomePage = () => {
         }
     }
 
-// allows to create a new entry
     const handleCreateEntry = async () => {
         console.log({
             newTitleValue,
@@ -40,42 +39,44 @@ const HomePage = () => {
             newContentValue,
             newMoodValue
         });
-        // rerenders when submitted
         fetchEntries();
     }
-    
+
     const handleDeleteEntry = async (entryId) => {
         await deleteEntry(entryId);
         fetchEntries();
     }
 
     const handleEditEntry = (entryId) => {
-            // Find the entry to edit by its ID
-    const entryToEdit = entries.find(entry => entry.EntryID === entryId);
-    
-    // Update the state with the entry data
-    setNewTitleValue(entryToEdit.Title);
-    setNewContentValue(entryToEdit.Content);
-    setNewMoodValue(entryToEdit.Mood);
-
-    // Set the entry ID to indicate that editing is in progress
-    setEditEntryId(entryId);
+        const entryToEdit = entries.find(entry => entry.EntryID === entryId);
+        setNewTitleValue(entryToEdit.Title);
+        setNewContentValue(entryToEdit.Content);
+        setNewMoodValue(entryToEdit.Mood);
+        setEditEntryId(entryId);
     }
 
     const handleSaveEntry = async (entryId, updatedEntryData) => {
-      try {
-        await updateEntry({
-            id: entryId,
+        try {
+            await updateEntry({
+                id: entryId,
                 title: updatedEntryData.title,
                 content: updatedEntryData.content,
                 mood: updatedEntryData.mood
-        });
-        setEditEntryId(null);
-        fetchEntries();
-    }catch (error) {
-        console.error('Error updating entry:', error);
+            });
+            setEditEntryId(null);
+            fetchEntries();
+        } catch (error) {
+            console.error('Error updating entry:', error);
+        }
     }
-    }
+
+    const handleExpandEntry = (entryId) => {
+         // Close all entries
+    setExpandedEntries({});
+
+    // Open the clicked entry
+    setExpandedEntries(prevState => ({ ...prevState, [entryId]: true }));
+    };
 
     const renderEntriesList = () => {
         if (!Array.isArray(entries)) {
@@ -85,78 +86,83 @@ const HomePage = () => {
     
         return entries.map((entry) => {
             if (!entry) {
-                return null; // Skip rendering if entry is null or undefined
+                return null;
             }
-            if (entry.EntryID === editEntryId) {
-                return (
-                    <div key={entry.EntryID}>
-                        <input type="text" value={newTitleValue} onChange={(e) => setNewTitleValue(e.target.value)} />
-                        <input type="text" value={newContentValue} onChange={(e) => setNewContentValue(e.target.value)} />
-                        <input type="text" value={newMoodValue} onChange={(e) => setNewMoodValue(e.target.value)} />
-                        <button onClick={() => handleSaveEntry(entry.EntryID, { title: newTitleValue, content: newContentValue, mood: newMoodValue })}>Save</button>
-                        <button onClick={() => {
-                        setNewTitleValue(entry.Title);
-                        setNewContentValue(entry.Content);
-                        setNewMoodValue(entry.Mood);
-                        setEditEntryId(null);
-                    }}>Cancel</button>
-                    </div>
-                );
-            } else {
-                return (
-                    <div key={entry.EntryID} className='entry'>
-                        <p>Date: {new Date(entry.DateCreated).toLocaleDateString(undefined, { month: 'numeric', day: 'numeric', year: '2-digit' })} {' '}
-                            {new Date(entry.DateCreated).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
-                        <p> Title: {entry.Title}</p>
-                        <p> Content: {entry.Content}</p>
-                        <p> Mood: {entry.Mood}</p>
-                        <button onClick={() => handleDeleteEntry(entry.EntryID)}> Delete </button>
-                        <button onClick={() => handleEditEntry(entry.EntryID)}> Edit</button>
-                    </div>
-                );
-            }
+            const isEditing = entry.EntryID === editEntryId;
+            const isExpanded = expandedEntries[entry.EntryID] || false; // Correctly check if the entry is expanded
+    
+            return (
+                <div key={entry.EntryID} className='entry'>
+                    <p onClick={() => handleExpandEntry(entry.EntryID)}>
+                        Date: {new Date(entry.DateCreated).toLocaleDateString(undefined, { month: 'numeric', day: 'numeric', year: '2-digit' })} {' '}
+                        {new Date(entry.DateCreated).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </p>
+                    <p onClick={() => handleExpandEntry(entry.EntryID)}>
+                        Title: {isEditing ? <span contentEditable='true' onBlur={(e) => setNewTitleValue(e.target.textContent)}>{entry.Title}</span> : entry.Title}
+                    </p>
+                    {isExpanded && ( // Only render expanded content if the entry is expanded
+                        <>
+                            <p>Content: {isEditing ? <span contentEditable='true' onBlur={(e) => setNewContentValue(e.target.textContent)}>{entry.Content}</span> : entry.Content}</p>
+                            <p>Mood: {isEditing ? <span contentEditable='true' onBlur={(e) => setNewMoodValue(e.target.textContent)}>{entry.Mood}</span> : entry.Mood}</p>
+                            <button onClick={() => handleDeleteEntry(entry.EntryID)}>Delete</button>
+                            {isEditing ? (
+                                <>
+                                    <button onClick={() => handleSaveEntry(entry.EntryID, { title: newTitleValue, content: newContentValue, mood: newMoodValue })}>Save</button>
+                                    <button onClick={() => {
+                                        setNewTitleValue(entry.Title);
+                                        setNewContentValue(entry.Content);
+                                        setNewMoodValue(entry.Mood);
+                                        setEditEntryId(null);
+                                    }}>Cancel</button>
+                                </>
+                            ) : (
+                                <button onClick={() => handleEditEntry(entry.EntryID)}>Edit</button>
+                            )}
+                        </>
+                    )}
+                </div>
+            );
         });
     };
 
-// takes you to login page when you click
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const LogOut = () => {
         removeJwt();
-        navigate('/')
+        navigate('/');
     }
 
-// all that is rendered on the page
     return (
         <div className='home-page-container'>
-      <div className='navbar-container'>
-        <Navbar />
-      </div>
-      <div className='left-column'>
-        <div className='inputs-container'>
-          <label htmlFor='new-entry-title-input'>Title:</label>
-          <input onChange={(event) => setNewTitleValue(event.target.value)} id='new-entry-title-input' type='text' />
-          <label htmlFor='new-entry-content-input'>Content:</label>
-          <input onChange={(event) => setNewContentValue(event.target.value)} id='new-entry-content-input' type='text' />
-          <label htmlFor='new-entry-mood-input'>Mood:</label>
-          <input onChange={(event) => setNewMoodValue(event.target.value)} id='new-entry-mood-input' type='text' />
-          <button onClick={handleCreateEntry} className='blue-btn new-entry-btn'> NEW ENTRY </button>
+            <div className='navbar-container'>
+                <Navbar />
+            </div>
+            <div className='left-column'>
+                <div className='inputs-container'>
+                    <label htmlFor='new-entry-title-input'>Title:</label>
+                    <input onChange={(event) => setNewTitleValue(event.target.value)} id='new-entry-title-input' type='text' />
+                    <label htmlFor='new-entry-content-input'>Content:</label>
+                    <input onChange={(event) => setNewContentValue(event.target.value)} id='new-entry-content-input' type='text' />
+                    <label htmlFor='new-entry-mood-input'>Mood:</label>
+                    <input onChange={(event) => setNewMoodValue(event.target.value)} id='new-entry-mood-input' type='text' />
+                    <button onClick={handleCreateEntry} className='blue-btn new-entry-btn'> NEW ENTRY </button>
+                </div>
+                <div className='calendar-container'>
+                    <Cal />
+                </div>
+                <div className='logout-button-container'>
+                    <button className='blue-btn logout-btn' onClick={LogOut}>LOG OUT</button>
+                </div>
+            </div>
+            <div className='right-column'>
+                <div className='entries-container'>
+                    <h1> All ENTRIES</h1>
+                    {renderEntriesList()}
+                </div>
+            </div>
         </div>
-        <div className='calendar-container'>
-          <Cal />
-        </div>
-        <div className='logout-button-container'>
-          <button className='blue-btn logout-btn' onClick={LogOut}>LOG OUT</button>
-        </div>
-      </div>
-      <div className='right-column'>
-        <div className='entries-container'>
-          <h1> All ENTRIES</h1>
-          {renderEntriesList()}
-        </div>
-      </div>
-    </div>
     );
 }
+
 
 export default HomePage;

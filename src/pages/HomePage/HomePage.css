@@ -13,13 +13,18 @@
   justify-content: space-between;
   align-items: center; /* Center the content vertically */
   padding:  15px  30px; /* Adjust padding as needed */
-  height: 50px;
+  height:  50px;
 }
 
 .navbar-container h1 {
-  font-size: 25px;
+  font-size:  25px;
   width:  300px;
   margin:  0; /* Remove default margin */
+}
+
+.left-column, .right-column {
+  flex:  1; /* Both columns take up equal space */
+  overflow: auto; /* Scroll within the column if content overflows */
 }
 
 .left-column {
@@ -35,6 +40,7 @@
   flex-direction: column;
   height:  100%; /* Take up full height */
 }
+
 .calendar-container {
   display: flex;
   justify-content: center;
@@ -54,13 +60,13 @@
 
 .inputs-container label {
   display: block;
-  justify-self:center ;
+  justify-self: center;
   margin-bottom:  5px;
 }
 
 .inputs-container input {
   width:  80%;
-  height: 50px;
+  height:  50px;
   padding:  5px;
   justify-self: center;
   border:  1px solid #ccc;
@@ -74,42 +80,48 @@
 }
 
 .entries-container {
-  padding: 20px;
-  background-color: rgb(218, 199, 242);
+  max-height: 100%; /* Adjust as needed */
   overflow-y: auto;
-  flex-grow: 1;
+  padding:  20px;
+  background-color: rgb(218,  199,  242);
+  flex-grow:  1;
 }
 
-.entries-container h1{
+.entries-container h1 {
   color: white;
   display: flex;
   justify-content: center;
-  padding-top: 30px;
-  padding-bottom: 40px;
+  padding-top:  30px;
+  padding-bottom:  40px;
 }
 
 .entry {
+  transition: all  0.3s ease;
   border:  1px solid #ccc; /* Add a border around each entry */
   padding:  10px; /* Add some padding inside each entry */
   margin-bottom:  10px; /* Add some space between each entry */
   border-radius:  5px; /* Round the corners of each entry */
   background-color: rgb(97,  96,  153);
   color: white;
+  width:  90%; /* Adjust the width to make the entries smaller */
+  margin-left:  5%; /* Center the entries by setting equal left and right margins */
+}
 
+.entry:hover {
+  transform: scale(1.05);
 }
 
 .logout-button-container {
-  padding: 20px;
+  padding:  20px;
   align-self: center;
   width: auto;
 }
 
 .blue-btn {
-  background-color: rgb(114, 178, 237);
+  background-color: rgb(114,  178,  237);
   border: none;
   color: white;
-  width: 200px;
-  height: 45px;
-  font-size: 20px;
+  width:  200px;
+  height:  45px;
+  font-size:  20px;
 }
-
