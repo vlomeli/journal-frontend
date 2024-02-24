@@ -6,6 +6,7 @@ import Navbar from '../../components/Navbar/Navbar';
 import Cal from '../../components/Calendar/Calendar';
 import './HomePage.css';
 
+
 const HomePage = () => {
     const [newTitleValue, setNewTitleValue] = useState('');
     const [newContentValue, setNewContentValue] = useState('');
@@ -13,20 +14,36 @@ const HomePage = () => {
     const [editEntryId, setEditEntryId] = useState(null);
     const [entries, setEntries] = useState([]);
     const [expandedEntries, setExpandedEntries] = useState({});
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalEntries, setTotalEntries] = useState(0);
+    const entriesPerPage =  7;
+
 
     useEffect(() => {
         fetchEntries();
-    }, []);
+    }, [currentPage]); // Depend on currentPage to refetch when it changes
+
+    useEffect(() => {
+        console.log(`Total Entries: ${totalEntries}`);
+    }, [totalEntries]);
+
 
     const fetchEntries = async () => {
         try {
-            const fetchedEntries = await getUserEntries();
-            console.log('entries, fetchedEntries', fetchedEntries);
-            setEntries(fetchedEntries.entries);
+            const fetchedEntries = await getUserEntries(currentPage);
+            console.log('fetchedEntries', fetchedEntries);
+            if (fetchedEntries && fetchedEntries.entries) {
+                setEntries(fetchedEntries.entries);
+                // Assuming fetchedEntries.entries is an array, use its length as the total entries
+                setTotalEntries(fetchedEntries.entries.length);
+            } else {
+                console.error('Unexpected fetchedEntries structure:', fetchedEntries);
+            }
         } catch (error) {
-            console.log('Error fetching entries', error);
+            console.error('Error fetching entries:', error);
         }
     }
+
 
     const handleCreateEntry = async () => {
         console.log({
@@ -42,10 +59,12 @@ const HomePage = () => {
         fetchEntries();
     }
 
+
     const handleDeleteEntry = async (entryId) => {
         await deleteEntry(entryId);
         fetchEntries();
     }
+
 
     const handleEditEntry = (entryId) => {
         const entryToEdit = entries.find(entry => entry.EntryID === entryId);
@@ -54,6 +73,7 @@ const HomePage = () => {
         setNewMoodValue(entryToEdit.Mood);
         setEditEntryId(entryId);
     }
+
 
     const handleSaveEntry = async (entryId, updatedEntryData) => {
         try {
@@ -70,27 +90,29 @@ const HomePage = () => {
         }
     }
 
+
     const handleExpandEntry = (entryId) => {
          // Close all entries
     setExpandedEntries({});
+
 
     // Open the clicked entry
     setExpandedEntries(prevState => ({ ...prevState, [entryId]: true }));
     };
 
+
     const renderEntriesList = () => {
-        if (!Array.isArray(entries)) {
-            console.log('Entries is not an array');
-            return <p> No entries to display</p>;
-        }
-    
-        return entries.map((entry) => {
+        const startIndex = (currentPage -  1) * entriesPerPage;
+        const endIndex = startIndex + entriesPerPage;
+        const currentPageEntries = entries.slice(startIndex, endIndex);
+   
+        return currentPageEntries.map((entry) => {
             if (!entry) {
                 return null;
             }
             const isEditing = entry.EntryID === editEntryId;
             const isExpanded = expandedEntries[entry.EntryID] || false; // Correctly check if the entry is expanded
-    
+   
             return (
                 <div key={entry.EntryID} className='entry'>
                     <p onClick={() => handleExpandEntry(entry.EntryID)}>
@@ -104,11 +126,13 @@ const HomePage = () => {
                         <>
                             <p>Content: {isEditing ? <span contentEditable='true' onBlur={(e) => setNewContentValue(e.target.textContent)}>{entry.Content}</span> : entry.Content}</p>
                             <p>Mood: {isEditing ? <span contentEditable='true' onBlur={(e) => setNewMoodValue(e.target.textContent)}>{entry.Mood}</span> : entry.Mood}</p>
-                            <button onClick={() => handleDeleteEntry(entry.EntryID)}>Delete</button>
+                            <div className="right-column buttons-container">
+                            <button className="small-btn" onClick={() => handleDeleteEntry(entry.EntryID)}>Delete</button>
                             {isEditing ? (
                                 <>
-                                    <button onClick={() => handleSaveEntry(entry.EntryID, { title: newTitleValue, content: newContentValue, mood: newMoodValue })}>Save</button>
-                                    <button onClick={() => {
+                                    <button className="small-btn" onClick={() => 
+                                    handleSaveEntry(entry.EntryID, { title: newTitleValue, content: newContentValue, mood: newMoodValue })}>Save</button>
+                                    <button className="small-btn" onClick={() => {
                                         setNewTitleValue(entry.Title);
                                         setNewContentValue(entry.Content);
                                         setNewMoodValue(entry.Mood);
@@ -116,8 +140,9 @@ const HomePage = () => {
                                     }}>Cancel</button>
                                 </>
                             ) : (
-                                <button onClick={() => handleEditEntry(entry.EntryID)}>Edit</button>
+                                <button className="small-btn" onClick={() => handleEditEntry(entry.EntryID)}>Edit</button>
                             )}
+                            </div>
                         </>
                     )}
                 </div>
@@ -125,12 +150,18 @@ const HomePage = () => {
         });
     };
 
+
     const navigate = useNavigate();
+
 
     const LogOut = () => {
         removeJwt();
         navigate('/');
     }
+
+
+    const totalPages = Math.ceil(totalEntries / entriesPerPage);
+
 
     return (
         <div className='home-page-container'>
@@ -158,6 +189,10 @@ const HomePage = () => {
                 <div className='entries-container'>
                     <h1> All ENTRIES</h1>
                     {renderEntriesList()}
+                    <div className="pages-container">
+                    <button className='pages-btn' onClick={() => setCurrentPage(currentPage -   1)} disabled={currentPage ===   1}>←</button>
+                    <button className='pages-btn' onClick={() => setCurrentPage(currentPage +   1)} disabled={currentPage === totalPages}>→</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -165,4 +200,7 @@ const HomePage = () => {
 }
 
 
+
+
 export default HomePage;
+ 

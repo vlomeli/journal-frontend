@@ -5,6 +5,7 @@
   height:  100vh; /* Full viewport height */
 }
 
+
 .navbar-container {
   grid-column:  1 / -1; /* Span the full width of the grid */
   background-color: rgb(97,  96,  153);
@@ -16,16 +17,19 @@
   height:  50px;
 }
 
+
 .navbar-container h1 {
   font-size:  25px;
   width:  300px;
   margin:  0; /* Remove default margin */
 }
 
+
 .left-column, .right-column {
   flex:  1; /* Both columns take up equal space */
   overflow: auto; /* Scroll within the column if content overflows */
 }
+
 
 .left-column {
   grid-column:  1; /* Take up the first column */
@@ -34,12 +38,14 @@
   height:  100%; /* Take up full height */
 }
 
+
 .right-column {
   grid-column:  2; /* Take up the second column */
   display: flex;
   flex-direction: column;
   height:  100%; /* Take up full height */
 }
+
 
 .calendar-container {
   display: flex;
@@ -50,6 +56,7 @@
   background-color: lightyellow;
 }
 
+
 .inputs-container {
   display: grid;
   grid-template-columns:  1fr;
@@ -57,6 +64,7 @@
   padding:  20px;
   background-color: lightgreen;
 }
+
 
 .inputs-container label {
   display: block;
@@ -79,43 +87,98 @@
   margin-top:  20px;
 }
 
+.right-column .small-btn {
+  background-color: rgb(114,  178,  237);
+  border: none;
+  color: white;
+  width: 80px; /* Allows the button to size based on content */
+  padding:  5px  10px; /* Adjusts the padding to make the button smaller */
+  font-size:  14px; /* Reduces the font size to make the button text smaller */
+  margin-top:  5px; /* Adds some space between buttons */
+  cursor: pointer;
+  transition: background-color  0.3s ease;
+}
+
+.right-column .buttons-container {
+  display: flex;
+  flex-direction: row; /* Aligns buttons in a row */
+  justify-content: flex-end;
+  gap: 10px;
+  width:  100%; /* Ensures the container takes full width of its parent */
+}
+
+.right-column .small-btn:hover {
+  background-color: #0056b3; /* Darker shade for hover effect */
+}
+
+.pages-container {
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Optional: If you also want to center the buttons vertically */
+  padding:  20px  0; /* Adds some padding around the buttons for better appearance */
+  gap: 30px
+}
+
 .entries-container {
-  max-height: 100%; /* Adjust as needed */
+  display: flex;
+  flex-direction: column;
   overflow-y: auto;
-  padding:  20px;
+  padding: 20px;
   background-color: rgb(218,  199,  242);
   flex-grow:  1;
 }
 
-.entries-container h1 {
-  color: white;
-  display: flex;
-  justify-content: center;
-  padding-top:  30px;
-  padding-bottom:  40px;
+.entries-container h1{
+font-size: 40px;
+display: flex;
+justify-content: center;
+padding-bottom: 20px;
+color: white;
 }
 
 .entry {
+  display: flex;
+  flex-direction: column;
   transition: all  0.3s ease;
-  border:  1px solid #ccc; /* Add a border around each entry */
-  padding:  10px; /* Add some padding inside each entry */
-  margin-bottom:  10px; /* Add some space between each entry */
-  border-radius:  5px; /* Round the corners of each entry */
+  border:  1px solid #ccc;
+  padding:  10px;
+  margin-bottom:  10px;
+  border-radius:  5px;
   background-color: rgb(97,  96,  153);
   color: white;
-  width:  90%; /* Adjust the width to make the entries smaller */
-  margin-left:  5%; /* Center the entries by setting equal left and right margins */
+  width:  90%;
+  margin-left:  5%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.entry-content {
+  display: flex; /* Use flexbox to layout the title and content on the same line */
+  flex-wrap: wrap; /* Allow the content to wrap if necessary */
+  width:  100%; /* Take full width of the .entry container */
+}
+
+.entry span[contentEditable='true'] {
+  display: block; /* Adjusted from inline-block */
+  flex-grow:  1;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
 }
 
 .entry:hover {
   transform: scale(1.05);
 }
 
+
 .logout-button-container {
   padding:  20px;
   align-self: center;
   width: auto;
 }
+
 
 .blue-btn {
   background-color: rgb(114,  178,  237);
@@ -124,4 +187,41 @@
   width:  200px;
   height:  45px;
   font-size:  20px;
+}
+
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding:  20px  0;
+}
+
+
+.pagination-button {
+  background-color: rgb(114,  178,  237); /* Bootstrap primary color */
+  border: none;
+  border-radius: px;
+  color: white;
+  padding:  5px  10px;
+  margin:  0  10px;
+  font-size:  20px;
+  cursor: pointer;
+  transition: background-color  0.3s ease;
+}
+
+
+.pagination-button:hover {
+  background-color: #0056b3; /* Darker shade for hover effect */
+}
+
+
+.pagination-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+
+.pagination-button span {
+  font-size:  24px; /* Adjust size as needed */
 }
