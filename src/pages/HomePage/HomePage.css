@@ -19,11 +19,37 @@
 
 
 .navbar-container h1 {
-  font-size:  25px;
+  font-size: 25px;
   width:  300px;
   margin:  0; /* Remove default margin */
 }
 
+.search-container {
+  position: relative; /* Ensure the search container is relative */
+}
+
+.suggestions-container {
+  position: absolute;
+  width:  100%; /* Take full width of the search container */
+  background-color: lightblue;
+  border:  1px solid #ccc;
+  box-shadow:  0  2px  4px rgba(0,0,0,0.1);
+  z-index:  100;
+  top:  100%; /* Position it right under the search bar */
+  left:  0; /* Align it to the left edge of the search container */
+  margin-top:  0; /* No extra margin needed */
+}
+
+.search-suggestion {
+  padding:  10px;
+  cursor: pointer;
+  max-height:  200px; /* Adjust based on your needs */
+  overflow-y: auto; /* Add scroll if content exceeds the max-height */
+}
+
+.search-suggestion:hover {
+  background-color: #f0f0f0;
+}
 
 .left-column, .right-column {
   flex:  1; /* Both columns take up equal space */

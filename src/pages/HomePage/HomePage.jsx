@@ -17,7 +17,13 @@ const HomePage = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalEntries, setTotalEntries] = useState(0);
     const entriesPerPage =  7;
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filteredEntries, setFilteredEntries] = useState([]);
 
+    const calculatePageNumber = (entryIndex) => {
+        return Math.ceil((entryIndex +  1) / entriesPerPage);
+    };
+    
 
     useEffect(() => {
         fetchEntries();
@@ -27,6 +33,9 @@ const HomePage = () => {
         console.log(`Total Entries: ${totalEntries}`);
     }, [totalEntries]);
 
+    useEffect(() => {
+        console.log('Expanded entries:', expandedEntries);
+    }, [expandedEntries]);
 
     const fetchEntries = async () => {
         try {
@@ -50,20 +59,34 @@ const HomePage = () => {
             newTitleValue,
             newContentValue,
             newMoodValue
-        })
+        });
+        try{
         await createEntry({
             newTitleValue,
             newContentValue,
             newMoodValue
         });
-        fetchEntries();
+         // Reset input fields and editEntryId state after successful creation
+         setNewTitleValue('');
+         setNewContentValue('');
+         setNewMoodValue('');
+         setEditEntryId(null);
+         // Fetch entries to update the list
+         fetchEntries();
+     } catch (error) {
+         console.error('Error creating entry:', error);
+     }
     }
+
+
 
 
     const handleDeleteEntry = async (entryId) => {
         await deleteEntry(entryId);
         fetchEntries();
     }
+
+
 
 
     const handleEditEntry = (entryId) => {
@@ -92,12 +115,33 @@ const HomePage = () => {
 
 
     const handleExpandEntry = (entryId) => {
-         // Close all entries
-    setExpandedEntries({});
-
-
+    console.log('Expanding entry:', entryId);
+    // Close all entries
     // Open the clicked entry
-    setExpandedEntries(prevState => ({ ...prevState, [entryId]: true }));
+    setExpandedEntries(prevState => ({ [entryId]: true }));
+    console.log('Expanded entries:', expandedEntries);
+    };
+
+
+    const handleSearchChange = (event) => {
+        setSearchQuery(event.target.value);
+        setFilteredEntries([]); // Clear the suggestions
+        if (event.target.value) {
+            const searchResults = entries.filter(entry =>
+                entry.Title.toLowerCase().includes(event.target.value.toLowerCase()) ||
+                entry.Content.toLowerCase().includes(event.target.value.toLowerCase())
+            );
+            setFilteredEntries(searchResults);
+        }
+    };
+
+    const handleSuggestionClick = (entryId) => {
+        console.log('Suggestion clicked:', entryId);
+        const entryIndex = entries.findIndex(entry => entry.EntryID === entryId);
+        const pageNumber = calculatePageNumber(entryIndex);
+        setCurrentPage(pageNumber);
+        setExpandedEntries({ [entryId]: true });
+        setFilteredEntries([]); // Clear the suggestions
     };
 
 
@@ -105,6 +149,7 @@ const HomePage = () => {
         const startIndex = (currentPage -  1) * entriesPerPage;
         const endIndex = startIndex + entriesPerPage;
         const currentPageEntries = entries.slice(startIndex, endIndex);
+       
    
         return currentPageEntries.map((entry) => {
             if (!entry) {
@@ -130,7 +175,7 @@ const HomePage = () => {
                             <button className="small-btn" onClick={() => handleDeleteEntry(entry.EntryID)}>Delete</button>
                             {isEditing ? (
                                 <>
-                                    <button className="small-btn" onClick={() => 
+                                    <button className="small-btn" onClick={() =>
                                     handleSaveEntry(entry.EntryID, { title: newTitleValue, content: newContentValue, mood: newMoodValue })}>Save</button>
                                     <button className="small-btn" onClick={() => {
                                         setNewTitleValue(entry.Title);
@@ -151,7 +196,11 @@ const HomePage = () => {
     };
 
 
+
+
     const navigate = useNavigate();
+
+
 
 
     const LogOut = () => {
@@ -160,13 +209,22 @@ const HomePage = () => {
     }
 
 
+
+
     const totalPages = Math.ceil(totalEntries / entriesPerPage);
+
+
 
 
     return (
         <div className='home-page-container'>
             <div className='navbar-container'>
-                <Navbar />
+                <Navbar
+                 searchQuery={searchQuery}  
+                 handleSearchChange={handleSearchChange}  
+                 filteredEntries={filteredEntries}
+                 handleSuggestionClick={handleSuggestionClick}
+                />
             </div>
             <div className='left-column'>
                 <div className='inputs-container'>
@@ -200,7 +258,11 @@ const HomePage = () => {
 }
 
 
+export default HomePage; 
 
 
-export default HomePage;
- 
+
+
+
+
+
