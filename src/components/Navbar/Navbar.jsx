@@ -2,11 +2,11 @@ import './Navbar.css';
 import searchIcon from '../../images/search-icon.png';
 
 
-const Navbar = ({ searchQuery, handleSearchChange, filteredEntries, handleSuggestionClick }) => {
+const Navbar = ({ searchQuery, handleSearchChange, filteredEntries, handleSuggestionClick, username }) => {
     return (
         <nav id='header'>
             <div className='navbar-container'>
-                <h1> WELCOME USER ツ</h1>
+                <h1> WELCOME {username} ツ</h1>
                 <div className='search-container'>
                     <input  
                         type='text'

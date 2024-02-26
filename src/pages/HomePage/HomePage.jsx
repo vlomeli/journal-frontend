@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { removeJwt } from '../../ApiServices/JwtService';
-import { createEntry, deleteEntry, getUserEntries, updateEntry } from '../../ApiServices/JournalService';
+import { createEntry, deleteEntry, getUserEntries, updateEntry, getUsername } from '../../ApiServices/JournalService';
 import Navbar from '../../components/Navbar/Navbar';
 import Cal from '../../components/Calendar/Calendar';
 import './HomePage.css';
@@ -19,11 +19,26 @@ const HomePage = () => {
     const entriesPerPage =  7;
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredEntries, setFilteredEntries] = useState([]);
+    const [username, setUsername] = useState('');
+
+    const navigate = useNavigate();
 
     const calculatePageNumber = (entryIndex) => {
         return Math.ceil((entryIndex +  1) / entriesPerPage);
     };
     
+    useEffect(() => {
+        const fetchUsername = async () => {
+            try {
+                const { username } = await getUsername();
+                setUsername(username);
+            } catch (error) {
+                console.error('Error fetching username:', error);
+            }
+        };
+
+        fetchUsername();
+    }, []); // Empty dependency array means this effect runs once on mount
 
     useEffect(() => {
         fetchEntries();
@@ -36,6 +51,8 @@ const HomePage = () => {
     useEffect(() => {
         console.log('Expanded entries:', expandedEntries);
     }, [expandedEntries]);
+
+ 
 
     const fetchEntries = async () => {
         try {
@@ -79,14 +96,10 @@ const HomePage = () => {
     }
 
 
-
-
     const handleDeleteEntry = async (entryId) => {
         await deleteEntry(entryId);
         fetchEntries();
     }
-
-
 
 
     const handleEditEntry = (entryId) => {
@@ -96,7 +109,6 @@ const HomePage = () => {
         setNewMoodValue(entryToEdit.Mood);
         setEditEntryId(entryId);
     }
-
 
     const handleSaveEntry = async (entryId, updatedEntryData) => {
         try {
@@ -195,26 +207,12 @@ const HomePage = () => {
         });
     };
 
-
-
-
-    const navigate = useNavigate();
-
-
-
-
     const LogOut = () => {
         removeJwt();
         navigate('/');
     }
 
-
-
-
     const totalPages = Math.ceil(totalEntries / entriesPerPage);
-
-
-
 
     return (
         <div className='home-page-container'>
@@ -224,6 +222,7 @@ const HomePage = () => {
                  handleSearchChange={handleSearchChange}  
                  filteredEntries={filteredEntries}
                  handleSuggestionClick={handleSuggestionClick}
+                 username={username} 
                 />
             </div>
             <div className='left-column'>
@@ -259,10 +258,3 @@ const HomePage = () => {
 
 
 export default HomePage; 
-
-
-
-
-
-
-

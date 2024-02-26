@@ -53,5 +53,17 @@ export const updateEntry = async (body) => {
     return data;
 }
 
+export const getUsername = async () => {
+    const response = await fetch(`${API_URL}/user_table`, {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${getJwt()}`
+        },
+    });
+    const data = await response.json();
+
+    return data;
+}
+
 
 //add try catch blocks when you have time
