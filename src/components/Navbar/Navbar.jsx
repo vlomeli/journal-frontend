@@ -1,5 +1,6 @@
 import './Navbar.css';
 import searchIcon from '../../images/search-icon.png';
+import PropTypes from 'prop-types';
 
 
 const Navbar = ({ searchQuery, handleSearchChange, filteredEntries, handleSuggestionClick, username }) => {
@@ -32,6 +33,17 @@ const Navbar = ({ searchQuery, handleSearchChange, filteredEntries, handleSugges
             </div>
         </nav>
     );
+};
+
+Navbar.propTypes = {
+    searchQuery: PropTypes.string.isRequired,
+    handleSearchChange: PropTypes.func.isRequired,
+    filteredEntries: PropTypes.arrayOf(PropTypes.shape({
+        EntryID: PropTypes.number.isRequired,
+        Title: PropTypes.string.isRequired,
+    })).isRequired,
+    handleSuggestionClick: PropTypes.func.isRequired,
+    username: PropTypes.string.isRequired,
 };
 
 
