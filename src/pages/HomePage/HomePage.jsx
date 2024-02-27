@@ -184,7 +184,9 @@ const HomePage = () => {
                             <p>Content: {isEditing ? <span contentEditable='true' onBlur={(e) => setNewContentValue(e.target.textContent)}>{entry.Content}</span> : entry.Content}</p>
                             <p>Mood: {isEditing ? <span contentEditable='true' onBlur={(e) => setNewMoodValue(e.target.textContent)}>{entry.Mood}</span> : entry.Mood}</p>
                             <div className="right-column buttons-container">
-                            <button className="small-btn" onClick={() => handleDeleteEntry(entry.EntryID)}>Delete</button>
+                            {isEditing && (
+                                <button className="delete-btn" onClick={() => handleDeleteEntry(entry.EntryID)}>X</button>
+                            )}
                             {isEditing ? (
                                 <>
                                     <button className="small-btn" onClick={() =>
