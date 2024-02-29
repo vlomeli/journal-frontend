@@ -1,5 +1,7 @@
 import { useState} from 'react';
 import {useNavigate, Link} from 'react-router-dom';
+import hidden from '../../images/hidden.png';
+import eye from '../../images/eye.png';
 
 import './LoginPage.css';
 
@@ -9,6 +11,7 @@ const LoginPage = () => {
     
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [passwordVisible, setPasswordVisible] = useState(false);
 
     const navigate = useNavigate();
 
@@ -40,19 +43,24 @@ const LoginPage = () => {
 
                 <input
                     onChange={(event) => handleUsernameChange(event)}
-                    className='username-input' 
+                    className='login-username-input' 
                     placeholder='Username' />
-                    
+
+            <div className="login-password-input-wrapper">
                 <input      
-                    onChange={(event) =>  handlePasswordChange(event)} 
-                    className='password-input'
+                    onChange={(event) => handlePasswordChange(event)} 
+                    className='login-password-input'
                     placeholder='Password'
-                    type='password' />
+                    type={passwordVisible ? 'text' : 'password'} />
+                    <button type="button" className="login-toggle-password-visibility" onClick={() => setPasswordVisible(!passwordVisible)}>
+                        <img src={passwordVisible ? eye : hidden} alt="Toggle Password Visibility" />
+                    </button>
+                </div>    
 
 
                 <button className='login-button' onClick={() => handleLoginClick()}> Login </button>
                     
-                <Link to='/register'> Don't have an account? Sign Up </Link>
+                <Link className='register-link' to='/register'> Don't have an account? Sign Up </Link>
             </div>
         </div>
     )

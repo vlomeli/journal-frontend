@@ -1,6 +1,7 @@
-
 import { useState} from 'react';
 import {useNavigate, Link} from 'react-router-dom';
+import hidden from '../../images/hidden.png';
+import eye from '../../images/eye.png';
 
 import './RegisterPage.css';
 
@@ -10,6 +11,7 @@ const RegisterPage = () => {
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [passwordVisible, setPasswordVisible] = useState(false);
 
     const navigate = useNavigate();
     
@@ -19,6 +21,10 @@ const RegisterPage = () => {
 
     const handlePasswordChange = (event) => {
         setPassword(event.target.value);
+    }
+
+    const togglePasswordVisibility = () => { // Function to toggle password visibility
+        setPasswordVisible(!passwordVisible);
     }
 
     const handleUsernameChange = (event) => {
@@ -45,23 +51,30 @@ const RegisterPage = () => {
 
                     <input
                         onChange={(event) => handleEmailChange(event)} 
-                        className='email-input' 
-                        placeholder='Email' />
+                        className='register-email-input' 
+                        placeholder='Email'
+                        type="email" />
 
-                    <input
-                        onChange={(event) =>  handlePasswordChange(event)} 
-                        className='password-input'
-                        placeholder='Password'
-                        type='password' />
+                    <div className="register-password-input-wrapper">
+                        <input
+                            onChange={(event) => handlePasswordChange(event)} 
+                            className='register-password-input'
+                            placeholder='Password'
+                            type={passwordVisible ? 'text' : 'password'} />
+                         <button type="button" className="register-toggle-password-visibility" onClick={togglePasswordVisibility}>
+                            <img src={passwordVisible ? eye : hidden} alt="Toggle Password Visibility" />
+                        </button>
+                    </div>
 
                     <input
                         onChange={(event) => handleUsernameChange(event)}
-                        className='username-input' 
-                        placeholder='Username' />
+                        className='register-username-input' 
+                        placeholder='Username'
+                        type="username" />
 
                     <button className='register-button' onClick={() => handleRegisterClick()}> register </button>
 
-                    <Link to='/'>Already have an account? Log In</Link>
+                    <Link className='login-link' to='/'>Already have an account? Log In</Link>
                     
             </div>
         </div>

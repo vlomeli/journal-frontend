@@ -1,17 +1,101 @@
 .register-page-container {
-    height:100%;
+    height: 100vh; /* Full viewport height */
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: #f1f1f1; /* Light grey background */
 }
 
 .register-form-container {
     display: flex;
     flex-direction: column;
-    height: 50%;
+    height: 45%;
+    width: 90%; /* Adjusted to be a percentage of the viewport width */
+    max-width: 400px; /* Ensures the form does not get too wide on larger screens */
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    margin: 0 auto; /* Centers the form container */
+    justify-content: center; /* Centers the link horizontally */
+    align-items: center; /* Centers the inputs and button horizontally */
 }
 
-.username-input, .email-input, .password-input, .register-button {
+h1 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333; /* Dark grey for heading */
+}
+
+.register-email-input, .register-username-input, .register-password-input {
+    width: 70%;
+    padding: 10px;
     margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    height: 40px; /* Explicitly set a height */
+}
+
+.register-button {
+    width: 70%;
+    padding: 10px;
+    background-color: #4285F4; /* Google's primary color */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.register-button:hover {
+    background-color: #0d47a1; /* Darker shade on hover */
+}
+
+Link {
+    text-align: center;
+    color: #4285F4; /* Link color matching the button */
+    text-decoration: none;
+}
+
+Link:hover {
+    text-decoration: underline;
+}
+
+.register-email-input {
+    width: 70%;
+}
+
+.login-link {
+    padding: 20px;
+}
+
+.register-password-input-wrapper {
+    width: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    height: 40px; /* Adjust as necessary */
+}
+
+.register-password-input {
+    flex-grow: 1; /* Make the input take up the remaining space */
+}
+
+.register-toggle-password-visibility {
+    position: absolute; /* Position the button absolutely within the wrapper */
+    right: 10px; /* Adjust the button's position from the right edge */
+    top: 50%; /* Center the button vertically */
+    transform: translateY(-65%); /* Center the button vertically */
+    background: none; /* Remove default button background */
+    border: none; /* Remove default button border */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    padding: 0; /* Remove default padding */
+    margin: 0; /* Remove default margin */
+}
+
+.register-toggle-password-visibility img {
+    width: 20px; /* Adjust the width of the image */
+    height: 20px; /* Adjust the height of the image */
 }

@@ -51,3 +51,7 @@ border-radius: 10px;
     width: 30px; /* Adjust this value to fit your image */
     height: 30px; /* Adjust this value to fit your image */
 }
+
+.navbar-container h1 {
+    color: white;
+}
