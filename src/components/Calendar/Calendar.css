@@ -1,4 +1,3 @@
-
   .react-calendar {
     border-radius: 10px;
     border: 0;
@@ -16,9 +15,30 @@
   
   .calendar-tile {
     background-color: rgb(240, 240, 250);
+    color: black;
   }
   
   .current-day {
     background-color: rgb(215, 18, 255);
     color: white;
   }
+
+  .calendar-button {
+    background-color: rgb(215, 18, 255);
+    color: white; /* Ensure the text color contrasts well with the background */
+}
+
+.react-calendar__navigation__arrow {
+  color:rgb(215, 18, 255); 
+  font-size: 20px;
+}
+
+.react-calendar__tile--active {
+  background-color: #006edc; 
+  color: white; /* Change the text color of the selected date to white */
+}
+
+.calendar-tile.current-day:hover {
+  background-color: rgb(215, 18, 255) !important; /* Use !important to override conflicting styles */
+  color: white !important; /* Ensure the text color doesn't change on hover */
+}
