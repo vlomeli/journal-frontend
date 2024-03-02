@@ -156,6 +156,26 @@ const HomePage = () => {
         setFilteredEntries([]); // Clear the suggestions
     };
 
+    const handleDateClick = (selectedDate) => {
+        // The selectedDate is already in UTC, so you can directly compare it with the entries' DateCreated values
+        const formattedDate = selectedDate.toISOString().split('T')[0];
+
+        // Find the entry that matches the selected date
+        const entryIndex = entries.findIndex(entry => {
+            const entryDate = new Date(entry.DateCreated).toISOString().split('T')[0];
+            return entryDate === formattedDate;
+        });
+
+        if (entryIndex !== -1) {
+            const entryId = entries[entryIndex].EntryID;
+            const pageNumber = calculatePageNumber(entryIndex);
+            setCurrentPage(pageNumber);
+            // Expand the first entry of the day by setting its ID in the expandedEntries state
+            setExpandedEntries({ [entryId]: true });
+        }
+    };
+
+
 
     const renderEntriesList = () => {
         const startIndex = (currentPage -  1) * entriesPerPage;
@@ -225,6 +245,7 @@ const HomePage = () => {
                  filteredEntries={filteredEntries}
                  handleSuggestionClick={handleSuggestionClick}
                  username={username} 
+                 timeZone="UTC"
                 />
             </div>
             <div className='left-column'>
@@ -238,7 +259,7 @@ const HomePage = () => {
                     <button onClick={handleCreateEntry} className='blue-btn new-entry-btn'> NEW ENTRY </button>
                 </div>
                 <div className='calendar-container'>
-                    <Cal />
+                    <Cal onDateClick={handleDateClick} />
                 </div>
                 <div className='logout-button-container'>
                     <button className='blue-btn logout-btn' onClick={LogOut}>LOG OUT</button>

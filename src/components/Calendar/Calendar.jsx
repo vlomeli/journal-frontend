@@ -2,23 +2,20 @@ import { useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './Calendar.css';
+import PropTypes from 'prop-types';
 
-const Cal = () => {
+const Cal = ({ onDateClick }) => {
     const [date, setDate] = useState(new Date());
 
 
     const handleDateChange = (newDate) => {
-        setDate(newDate);
-        // Call a function to handle journal entries for the selected date
-        handleJournalEntries(newDate);
-      };
-
-
-      const handleJournalEntries = (selectedDate) => {
-        // Implement your logic to handle journal entries for the selected date
-        console.log('Selected date:', selectedDate);
-      };
-
+      // Convert the selected date to UTC
+      const utcDate = new Date(Date.UTC(newDate.getFullYear(), newDate.getMonth(), newDate.getDate(), newDate.getHours(), newDate.getMinutes(), newDate.getSeconds()));
+      console.log('Selected date in UTC:', utcDate);
+      setDate(newDate);
+      // Call a function to handle journal entries for the selected date
+      onDateClick(utcDate);
+};
 
       const tileClassName = ({ date, view }) => {
         // Add a custom class to the calendar tiles
@@ -45,7 +42,8 @@ const Cal = () => {
         );
     };
 
-
-
-
+    Cal.propTypes = {
+      onDateClick: PropTypes.func.isRequired,
+    };
+    
 export default Cal;
