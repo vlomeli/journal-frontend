@@ -9,13 +9,13 @@ const Cal = ({ onDateClick }) => {
 
 
     const handleDateChange = (newDate) => {
-      // Convert the selected date to UTC
-      const utcDate = new Date(Date.UTC(newDate.getFullYear(), newDate.getMonth(), newDate.getDate(), newDate.getHours(), newDate.getMinutes(), newDate.getSeconds()));
-      console.log('Selected date in UTC:', utcDate);
+      // Convert the selected date to Pacific Standard Time
+      const pstDate = new Date(newDate.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }));
+      console.log('Selected date in PST:', pstDate);
       setDate(newDate);
       // Call a function to handle journal entries for the selected date
-      onDateClick(utcDate);
-};
+      onDateClick(pstDate);
+  };
 
       const tileClassName = ({ date, view }) => {
         // Add a custom class to the calendar tiles

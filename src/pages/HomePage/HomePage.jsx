@@ -156,26 +156,33 @@ const HomePage = () => {
         setFilteredEntries([]); // Clear the suggestions
     };
 
-    const handleDateClick = (selectedDate) => {
-        // The selectedDate is already in UTC, so you can directly compare it with the entries' DateCreated values
-        const formattedDate = selectedDate.toISOString().split('T')[0];
-
+    const handleDateClick = async (selectedDate) => {
+        // Convert the selectedDate to a string format that only includes the day, month, and year
+        const formattedDate = selectedDate.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).split(',')[0];
+        
         // Find the entry that matches the selected date
-        const entryIndex = entries.findIndex(entry => {
-            const entryDate = new Date(entry.DateCreated).toISOString().split('T')[0];
+        const entryForDate = entries.find(entry => {
+            // Convert the DateCreated of each entry to a string format that only includes the day, month, and year
+            const entryDate = new Date(entry.DateCreated).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).split(',')[0];
             return entryDate === formattedDate;
         });
-
-        if (entryIndex !== -1) {
-            const entryId = entries[entryIndex].EntryID;
-            const pageNumber = calculatePageNumber(entryIndex);
+        
+        if (entryForDate) {
+            // Calculate the page number based on the entry's index
+            const pageNumber = calculatePageNumber(entries.indexOf(entryForDate));
             setCurrentPage(pageNumber);
-            // Expand the first entry of the day by setting its ID in the expandedEntries state
-            setExpandedEntries({ [entryId]: true });
+        
+            
+            // Close all entries
+            setExpandedEntries({});
+
+            // Expand the entry by setting its ID to true in expandedEntries state
+            setExpandedEntries(prevState => ({ ...prevState, [entryForDate.EntryID]: true }));
+        } else {
+            // If no entry is found for the selected date, you might want to handle this case differently
+            console.log('No entry found for the selected date');
         }
     };
-
-
 
     const renderEntriesList = () => {
         const startIndex = (currentPage -  1) * entriesPerPage;
@@ -245,7 +252,6 @@ const HomePage = () => {
                  filteredEntries={filteredEntries}
                  handleSuggestionClick={handleSuggestionClick}
                  username={username} 
-                 timeZone="UTC"
                 />
             </div>
             <div className='left-column'>
