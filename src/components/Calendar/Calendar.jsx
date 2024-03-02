@@ -4,7 +4,7 @@ import 'react-calendar/dist/Calendar.css';
 import './Calendar.css';
 import PropTypes from 'prop-types';
 
-const Cal = ({ onDateClick }) => {
+const Cal = ({ onDateClick, entries}) => {
     const [date, setDate] = useState(new Date());
 
 
@@ -27,7 +27,17 @@ const Cal = ({ onDateClick }) => {
         }
         return null;
       };
-   
+      
+      const tileContent = ({ date }) => {
+        // Check if there is an entry for the date
+        const entryForDate = entries.find(entry => {
+            const entryDate = new Date(entry.DateCreated).toLocaleDateString(undefined, { month: 'numeric', day: 'numeric', year: '2-digit' });
+            const tileDate = date.toLocaleDateString(undefined, { month: 'numeric', day: 'numeric', year: '2-digit' });
+            return entryDate === tileDate;
+        });
+        // If there is an entry, render a green circle
+        return entryForDate ? <div className="entry-badge"></div> : null;
+    };
    
     return (
         <div className="calendar-container">
@@ -35,6 +45,7 @@ const Cal = ({ onDateClick }) => {
             onChange={handleDateChange}
             value={date}
             tileClassName={tileClassName}
+            tileContent={tileContent}
             prev2ButtonClassName="calendar-button"
             next2ButtonClassName="calendar-button"
         />
@@ -44,6 +55,7 @@ const Cal = ({ onDateClick }) => {
 
     Cal.propTypes = {
       onDateClick: PropTypes.func.isRequired,
+      entries: PropTypes.array.isRequired,
     };
     
 export default Cal;

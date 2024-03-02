@@ -265,7 +265,10 @@ const HomePage = () => {
                     <button onClick={handleCreateEntry} className='blue-btn new-entry-btn'> NEW ENTRY </button>
                 </div>
                 <div className='calendar-container'>
-                    <Cal onDateClick={handleDateClick} />
+                     <Cal 
+                    onDateClick={handleDateClick} 
+                    entries={entries}
+                     />
                 </div>
                 <div className='logout-button-container'>
                     <button className='blue-btn logout-btn' onClick={LogOut}>LOG OUT</button>

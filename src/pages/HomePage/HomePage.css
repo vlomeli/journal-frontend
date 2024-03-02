@@ -113,6 +113,10 @@
   margin-top:  20px;
 }
 
+input:focus {
+  outline: none;
+}
+
 .right-column .small-btn {
   background-color: rgb(114,  178,  237);
   border: none;
@@ -160,6 +164,8 @@ display: flex;
 justify-content: center;
 padding-bottom: 20px;
 color: white;
+text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add a text shadow */
+transition: all 0.3s ease; /* Add a transition for a smooth effect */
 }
 
 .entry {
@@ -272,4 +278,8 @@ color: white;
 
 .pagination-button span {
   font-size:  24px; /* Adjust size as needed */
+}
+
+input:focus {
+  outline: none;
 }
