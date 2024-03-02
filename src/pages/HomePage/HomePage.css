@@ -283,3 +283,28 @@ transition: all 0.3s ease; /* Add a transition for a smooth effect */
 input:focus {
   outline: none;
 }
+
+.mood-tags-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+.mood-tag {
+  padding: 5px 10px;
+  border: none;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.mood-tag:hover {
+  background-color: #d0d0d0;
+}
+
+.mood-tag.selected {
+  background-color: #0056b3; /* Change the color to your desired color */
+  color: white; /* Change the text color to white */
+}

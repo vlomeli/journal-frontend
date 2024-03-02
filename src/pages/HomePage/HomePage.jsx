@@ -20,6 +20,7 @@ const HomePage = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredEntries, setFilteredEntries] = useState([]);
     const [username, setUsername] = useState('');
+    const [selectedMoodTag, setSelectedMoodTag] = useState(null);
 
     const navigate = useNavigate();
 
@@ -88,6 +89,7 @@ const HomePage = () => {
          setNewContentValue('');
          setNewMoodValue('');
          setEditEntryId(null);
+         setSelectedMoodTag(null); // or setSelectedMoodTag('') if you initialize it as an empty string
          // Fetch entries to update the list
          fetchEntries();
      } catch (error) {
@@ -257,13 +259,37 @@ const HomePage = () => {
             <div className='left-column'>
                 <div className='inputs-container'>
                     <label htmlFor='new-entry-title-input'>Title:</label>
-                    <input onChange={(event) => setNewTitleValue(event.target.value)} id='new-entry-title-input' type='text' />
+                    <input 
+                        value={newTitleValue}
+                        onChange={(event) => setNewTitleValue(event.target.value)}
+                        id='new-entry-title-input' 
+                        type='text' 
+                        />
                     <label htmlFor='new-entry-content-input'>Content:</label>
-                    <input onChange={(event) => setNewContentValue(event.target.value)} id='new-entry-content-input' type='text' />
+                    <input 
+                        value={newContentValue}
+                        onChange={(event) => setNewContentValue(event.target.value)} 
+                        id='new-entry-content-input' 
+                        type='text' 
+                        />
                     <label htmlFor='new-entry-mood-input'>Mood:</label>
-                    <input onChange={(event) => setNewMoodValue(event.target.value)} id='new-entry-mood-input' type='text' />
-                    <button onClick={handleCreateEntry} className='blue-btn new-entry-btn'> NEW ENTRY </button>
+                    {/* Mood tags */}
+                <div className="mood-tags-container">
+                    <button onClick={() => {
+                        setNewMoodValue('Sad');
+                        setSelectedMoodTag('Sad');
+                    }} className={`mood-tag ${selectedMoodTag === 'Sad' ? 'selected' : ''}`}>Sad</button>
+                    <button onClick={() => {
+                        setNewMoodValue('Neutral');
+                        setSelectedMoodTag('Neutral');
+                    }} className={`mood-tag ${selectedMoodTag === 'Neutral' ? 'selected' : ''}`}>Neutral</button>
+                    <button onClick={() => {
+                        setNewMoodValue('Happy');
+                        setSelectedMoodTag('Happy');
+                    }} className={`mood-tag ${selectedMoodTag === 'Happy' ? 'selected' : ''}`}>Happy</button>
                 </div>
+                <button onClick={handleCreateEntry} className='blue-btn new-entry-btn'> NEW ENTRY </button>
+            </div>
                 <div className='calendar-container'>
                      <Cal 
                     onDateClick={handleDateClick} 
