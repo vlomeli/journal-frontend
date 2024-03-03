@@ -21,6 +21,9 @@ const HomePage = () => {
     const [filteredEntries, setFilteredEntries] = useState([]);
     const [username, setUsername] = useState('');
     const [selectedMoodTag, setSelectedMoodTag] = useState(null);
+    const [editingTitleValue, setEditingTitleValue] = useState('');
+    const [editingContentValue, setEditingContentValue] = useState('');
+    const [editingMoodValue, setEditingMoodValue] = useState('');
 
     const navigate = useNavigate();
 
@@ -79,22 +82,22 @@ const HomePage = () => {
             newMoodValue
         });
         try{
-        await createEntry({
-            newTitleValue,
-            newContentValue,
-            newMoodValue
-        });
-         // Reset input fields and editEntryId state after successful creation
-         setNewTitleValue('');
-         setNewContentValue('');
-         setNewMoodValue('');
-         setEditEntryId(null);
-         setSelectedMoodTag(null); // or setSelectedMoodTag('') if you initialize it as an empty string
-         // Fetch entries to update the list
-         fetchEntries();
-     } catch (error) {
-         console.error('Error creating entry:', error);
-     }
+            await createEntry({
+                newTitleValue,
+                newContentValue,
+                newMoodValue
+            });
+            // Reset input fields and editEntryId state after successful creation
+            setNewTitleValue('');
+            setNewContentValue('');
+            setNewMoodValue('');
+            setEditEntryId(null);
+            setSelectedMoodTag(null); // or setSelectedMoodTag('') if you initialize it as an empty string
+            // Fetch entries to update the list
+            fetchEntries();
+        } catch (error) {
+            console.error('Error creating entry:', error);
+        }
     }
 
 
@@ -106,19 +109,19 @@ const HomePage = () => {
 
     const handleEditEntry = (entryId) => {
         const entryToEdit = entries.find(entry => entry.EntryID === entryId);
-        setNewTitleValue(entryToEdit.Title);
-        setNewContentValue(entryToEdit.Content);
-        setNewMoodValue(entryToEdit.Mood);
+        setEditingTitleValue(entryToEdit.Title);
+        setEditingContentValue(entryToEdit.Content);
+        setEditingMoodValue(entryToEdit.Mood);
         setEditEntryId(entryId);
     }
 
-    const handleSaveEntry = async (entryId, updatedEntryData) => {
+    const handleSaveEntry = async (entryId) => {
         try {
             await updateEntry({
                 id: entryId,
-                title: updatedEntryData.title,
-                content: updatedEntryData.content,
-                mood: updatedEntryData.mood
+                title: editingTitleValue,
+                content: editingContentValue,
+                mood: editingMoodValue
             });
             setEditEntryId(null);
             fetchEntries();
@@ -206,12 +209,12 @@ const HomePage = () => {
                         {new Date(entry.DateCreated).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </p>
                     <p onClick={() => handleExpandEntry(entry.EntryID)}>
-                        Title: {isEditing ? <span contentEditable='true' onBlur={(e) => setNewTitleValue(e.target.textContent)}>{entry.Title}</span> : entry.Title}
+                        Title: {isEditing ? <span contentEditable='true' onBlur={(e) => setEditingTitleValue(e.target.textContent)}>{editingTitleValue}</span> : entry.Title}
                     </p>
                     {isExpanded && ( // Only render expanded content if the entry is expanded
                         <>
-                            <p>Content: {isEditing ? <span contentEditable='true' onBlur={(e) => setNewContentValue(e.target.textContent)}>{entry.Content}</span> : entry.Content}</p>
-                            <p>Mood: {isEditing ? <span contentEditable='true' onBlur={(e) => setNewMoodValue(e.target.textContent)}>{entry.Mood}</span> : entry.Mood}</p>
+                            <p>Content: {isEditing ? <span contentEditable='true' onBlur={(e) => setEditingContentValue(e.target.textContent)}>{editingContentValue}</span> : entry.Content}</p>
+                            <p>Mood: {isEditing ? <span contentEditable='true' onBlur={(e) => setEditingMoodValue(e.target.textContent)}>{editingMoodValue}</span> : entry.Mood}</p>
                             <div className="right-column buttons-container">
                             {isEditing && (
                                 <button className="delete-btn" onClick={() => handleDeleteEntry(entry.EntryID)}>X</button>
@@ -219,11 +222,11 @@ const HomePage = () => {
                             {isEditing ? (
                                 <>
                                     <button className="small-btn" onClick={() =>
-                                    handleSaveEntry(entry.EntryID, { title: newTitleValue, content: newContentValue, mood: newMoodValue })}>Save</button>
+                                    handleSaveEntry(entry.EntryID)}>Save</button>
                                     <button className="small-btn" onClick={() => {
-                                        setNewTitleValue(entry.Title);
-                                        setNewContentValue(entry.Content);
-                                        setNewMoodValue(entry.Mood);
+                                        setEditingTitleValue(entry.Title);
+                                        setEditingContentValue(entry.Content);
+                                        setEditingMoodValue(entry.Mood);
                                         setEditEntryId(null);
                                     }}>Cancel</button>
                                 </>
