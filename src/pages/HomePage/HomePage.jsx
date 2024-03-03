@@ -132,13 +132,21 @@ const HomePage = () => {
 
 
     const handleExpandEntry = (entryId) => {
-    console.log('Expanding entry:', entryId);
-    // Close all entries
-    // Open the clicked entry
-    setExpandedEntries(prevState => ({ [entryId]: true }));
-    console.log('Expanded entries:', expandedEntries);
+        console.log('Expanding entry:', entryId);
+        // Close all entries and open the clicked entry
+        setExpandedEntries(prevState => {
+            // Create a new object with all entries set to false
+            const newState = Object.keys(prevState).reduce((acc, key) => {
+                acc[key] = false;
+                return acc;
+            }, {});
+            // Set the clicked entry to true
+            newState[entryId] = true;
+            return newState;
+        });
+        // Note: The console.log here will not reflect the updated state due to the asynchronous nature of state updates
+        // Consider using a useEffect to log the state after it updates
     };
-
 
     const handleSearchChange = (event) => {
         setSearchQuery(event.target.value);
