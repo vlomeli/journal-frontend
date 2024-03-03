@@ -269,21 +269,21 @@ const HomePage = () => {
             </div>
             <div className='left-column'>
                 <div className='inputs-container'>
-                    <label htmlFor='new-entry-title-input'>Title:</label>
+                    <label htmlFor='new-entry-title-input'>TITLE:</label>
                     <input 
                         value={newTitleValue}
                         onChange={(event) => setNewTitleValue(event.target.value)}
                         id='new-entry-title-input' 
                         type='text' 
                         />
-                    <label htmlFor='new-entry-content-input'>Content:</label>
+                    <label htmlFor='new-entry-content-input'>CONTENT:</label>
                     <input 
                         value={newContentValue}
                         onChange={(event) => setNewContentValue(event.target.value)} 
                         id='new-entry-content-input' 
                         type='text' 
                         />
-                    <label htmlFor='new-entry-mood-input'>Mood:</label>
+                    <label htmlFor='new-entry-mood-input'>MOOD:</label>
                     {/* Mood tags */}
                 <div className="mood-tags-container">
                     <button onClick={() => {

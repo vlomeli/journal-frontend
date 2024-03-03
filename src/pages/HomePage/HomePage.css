@@ -31,7 +31,7 @@
 .suggestions-container {
   position: absolute;
   width:  100%; /* Take full width of the search container */
-  background-color: lightblue;
+  background-color: lightslategrey;
   border:  1px solid #ccc;
   box-shadow:  0  2px  4px rgba(0,0,0,0.1);
   z-index:  100;
@@ -79,7 +79,7 @@
   align-items: center;
   padding-top:  20px;
   padding-bottom:  20px;
-  background-color: lightyellow;
+  background-color: lightslategray;
 }
 
 
@@ -88,7 +88,7 @@
   grid-template-columns:  1fr;
   grid-gap:  10px;
   padding:  20px;
-  background-color: lightgreen;
+  background-color:lightslategray;
 }
 
 
@@ -96,6 +96,7 @@
   display: block;
   justify-self: center;
   margin-bottom:  5px;
+  color: white;
 }
 
 .inputs-container input {
@@ -104,7 +105,7 @@
   padding:  5px;
   justify-self: center;
   border:  1px solid #ccc;
-  border-radius:  4px;
+  border-radius:  10px;
 }
 
 .inputs-container .new-entry-btn {
@@ -116,7 +117,9 @@
 input:focus {
   outline: none;
 }
-
+.left-column {
+  background-color: lightslategray;
+}
 .right-column .small-btn {
   background-color: rgb(114,  178,  237);
   border: none;
@@ -287,7 +290,7 @@ input:focus {
 .mood-tags-container {
   display: flex;
   justify-content: center;
-  margin-top: 10px;
+  
   margin-bottom: 10px;
   gap: 10px;
 }
