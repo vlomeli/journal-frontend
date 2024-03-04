@@ -36,7 +36,7 @@ const RegisterPage = () => {
 
         if (success) { 
             localStorage.setItem('journal-app-jwt', jwt);
-            navigate('/home');
+            navigate('/');
         }else {
             alert('Error registering')
         }
