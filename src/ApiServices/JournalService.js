@@ -1,18 +1,19 @@
 import { API_URL } from "../environment";
 import { getJwt } from "./JwtService";
 
-export const createEntry = async (body) => {
+//making a POST HTTP request to the Endpoint containing the corresponding db table to create an entry.
+export const createEntry = async (body) => {  // body is a parameter which is an object representing the data that is being added
     const response = await fetch(`${API_URL}/entry_table`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${getJwt()}`
+            'Content-Type': 'application/json',     // request body is in JSON format
+            Authorization: `Bearer ${getJwt()}`     // contains jwt token
         },
-        body: JSON.stringify(body)
+        body: JSON.stringify(body)                  // body is being turned into a string
     });
-    const data = await response.json();
+    const data = await response.json();             // parses the JSON data from the response & stores in data variable
 
-    return data;
+    return data;           // function returns the parsed JSON data from the response
 }
 
 export const getUserEntries = async () => {

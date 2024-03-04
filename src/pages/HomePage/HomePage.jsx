@@ -8,6 +8,7 @@ import './HomePage.css';
 
 
 const HomePage = () => {
+     // State variables
     const [newTitleValue, setNewTitleValue] = useState('');
     const [newContentValue, setNewContentValue] = useState('');
     const [newMoodValue, setNewMoodValue] = useState('');
@@ -25,12 +26,24 @@ const HomePage = () => {
     const [editingContentValue, setEditingContentValue] = useState('');
     const [editingMoodValue, setEditingMoodValue] = useState('');
 
+     // Navigate hook
     const navigate = useNavigate();
 
+    // Function to log out
+    const LogOut = () => {
+        removeJwt();
+        navigate('/');
+    }
+
+    // Calculate total pages
+    const totalPages = Math.ceil(totalEntries / entriesPerPage);
+
+    // Function to calculate page number
     const calculatePageNumber = (entryIndex) => {
         return Math.ceil((entryIndex +  1) / entriesPerPage);
     };
     
+    // Fetch username on component mount
     useEffect(() => {
         const fetchUsername = async () => {
             try {
@@ -42,29 +55,32 @@ const HomePage = () => {
         };
 
         fetchUsername();
-    }, []); // Empty dependency array means this effect runs once on mount
+    }, []); 
 
+     // Fetch entries on currentPage change
     useEffect(() => {
         fetchEntries();
-    }, [currentPage]); // Depend on currentPage to refetch when it changes
+    }, [currentPage]); 
 
+    // Log totalEntries on change
     useEffect(() => {
         console.log(`Total Entries: ${totalEntries}`);
     }, [totalEntries]);
 
+    // Log expandedEntries on change
     useEffect(() => {
         console.log('Expanded entries:', expandedEntries);
     }, [expandedEntries]);
 
  
-
+    // Function to fetch entries
     const fetchEntries = async () => {
         try {
             const fetchedEntries = await getUserEntries(currentPage);
             console.log('fetchedEntries', fetchedEntries);
             if (fetchedEntries && fetchedEntries.entries) {
                 setEntries(fetchedEntries.entries);
-                // Assuming fetchedEntries.entries is an array, use its length as the total entries
+                
                 setTotalEntries(fetchedEntries.entries.length);
             } else {
                 console.error('Unexpected fetchedEntries structure:', fetchedEntries);
@@ -74,7 +90,7 @@ const HomePage = () => {
         }
     }
 
-
+    // Function to handle creating an entry
     const handleCreateEntry = async () => {
         console.log({
             newTitleValue,
@@ -87,26 +103,26 @@ const HomePage = () => {
                 newContentValue,
                 newMoodValue
             });
-            // Reset input fields and editEntryId state after successful creation
+            
             setNewTitleValue('');
             setNewContentValue('');
             setNewMoodValue('');
             setEditEntryId(null);
-            setSelectedMoodTag(null); // or setSelectedMoodTag('') if you initialize it as an empty string
-            // Fetch entries to update the list
+            setSelectedMoodTag(null); 
+            
             fetchEntries();
         } catch (error) {
             console.error('Error creating entry:', error);
         }
     }
 
-
+    // Function to handle deleting an entry
     const handleDeleteEntry = async (entryId) => {
         await deleteEntry(entryId);
         fetchEntries();
     }
 
-
+    // Function to handle editing an entry
     const handleEditEntry = (entryId) => {
         const entryToEdit = entries.find(entry => entry.EntryID === entryId);
         setEditingTitleValue(entryToEdit.Title);
@@ -115,6 +131,7 @@ const HomePage = () => {
         setEditEntryId(entryId);
     }
 
+    // Function to handle saving an entry
     const handleSaveEntry = async (entryId) => {
         try {
             await updateEntry({
@@ -130,27 +147,27 @@ const HomePage = () => {
         }
     }
 
-
+    // Function to expand an entry
     const handleExpandEntry = (entryId) => {
         console.log('Expanding entry:', entryId);
-        // Close all entries and open the clicked entry
+        
         setExpandedEntries(prevState => {
-            // Create a new object with all entries set to false
+            
             const newState = Object.keys(prevState).reduce((acc, key) => {
                 acc[key] = false;
                 return acc;
             }, {});
-            // Set the clicked entry to true
+            
             newState[entryId] = true;
             return newState;
         });
-        // Note: The console.log here will not reflect the updated state due to the asynchronous nature of state updates
-        // Consider using a useEffect to log the state after it updates
+        
     };
 
+    // Function to handle search change
     const handleSearchChange = (event) => {
         setSearchQuery(event.target.value);
-        setFilteredEntries([]); // Clear the suggestions
+        setFilteredEntries([]); 
         if (event.target.value) {
             const searchResults = entries.filter(entry =>
                 entry.Title.toLowerCase().includes(event.target.value.toLowerCase()) ||
@@ -160,43 +177,40 @@ const HomePage = () => {
         }
     };
 
+    // Function to handle suggestion click
     const handleSuggestionClick = (entryId) => {
         console.log('Suggestion clicked:', entryId);
         const entryIndex = entries.findIndex(entry => entry.EntryID === entryId);
         const pageNumber = calculatePageNumber(entryIndex);
         setCurrentPage(pageNumber);
         setExpandedEntries({ [entryId]: true });
-        setFilteredEntries([]); // Clear the suggestions
+        setFilteredEntries([]); 
+        setSearchQuery(''); // Clear the search bar text
     };
 
+    // Function to handle date click
     const handleDateClick = async (selectedDate) => {
-        // Convert the selectedDate to a string format that only includes the day, month, and year
+        
         const formattedDate = selectedDate.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).split(',')[0];
         
-        // Find the entry that matches the selected date
         const entryForDate = entries.find(entry => {
-            // Convert the DateCreated of each entry to a string format that only includes the day, month, and year
+           
             const entryDate = new Date(entry.DateCreated).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).split(',')[0];
             return entryDate === formattedDate;
         });
         
         if (entryForDate) {
-            // Calculate the page number based on the entry's index
             const pageNumber = calculatePageNumber(entries.indexOf(entryForDate));
             setCurrentPage(pageNumber);
-        
-            
-            // Close all entries
             setExpandedEntries({});
-
-            // Expand the entry by setting its ID to true in expandedEntries state
             setExpandedEntries(prevState => ({ ...prevState, [entryForDate.EntryID]: true }));
         } else {
-            // If no entry is found for the selected date, you might want to handle this case differently
+            
             console.log('No entry found for the selected date');
         }
     };
 
+    // Function to render entries list
     const renderEntriesList = () => {
         const startIndex = (currentPage -  1) * entriesPerPage;
         const endIndex = startIndex + entriesPerPage;
@@ -208,7 +222,7 @@ const HomePage = () => {
                 return null;
             }
             const isEditing = entry.EntryID === editEntryId;
-            const isExpanded = expandedEntries[entry.EntryID] || false; // Correctly check if the entry is expanded
+            const isExpanded = expandedEntries[entry.EntryID] || false;
    
             return (
                 <div key={entry.EntryID} className='entry'>
@@ -219,7 +233,7 @@ const HomePage = () => {
                     <p onClick={() => handleExpandEntry(entry.EntryID)}>
                         Title: {isEditing ? <span contentEditable='true' onBlur={(e) => setEditingTitleValue(e.target.textContent)}>{editingTitleValue}</span> : entry.Title}
                     </p>
-                    {isExpanded && ( // Only render expanded content if the entry is expanded
+                    {isExpanded && ( 
                         <>
                             <p>Content: {isEditing ? <span contentEditable='true' onBlur={(e) => setEditingContentValue(e.target.textContent)}>{editingContentValue}</span> : entry.Content}</p>
                             <p>Mood: {isEditing ? <span contentEditable='true' onBlur={(e) => setEditingMoodValue(e.target.textContent)}>{editingMoodValue}</span> : entry.Mood}</p>
@@ -248,13 +262,6 @@ const HomePage = () => {
             );
         });
     };
-
-    const LogOut = () => {
-        removeJwt();
-        navigate('/');
-    }
-
-    const totalPages = Math.ceil(totalEntries / entriesPerPage);
 
     return (
         <div className='home-page-container'>

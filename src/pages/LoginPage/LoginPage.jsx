@@ -23,7 +23,6 @@ const LoginPage = () => {
         setPassword(event.target.value);
     }
 
-   
     const handleLoginClick = async () => {
         const { jwt, success } = await LogIn({  username, password});
 

@@ -12,7 +12,7 @@ const Navbar = ({ searchQuery, handleSearchChange, filteredEntries, handleSugges
                     <input  
                         type='text'
                         id='search-bar'  
-                        placeholder='Search...'
+                        placeholder='Search'
                         value={searchQuery}
                         onChange={handleSearchChange}
                     />
