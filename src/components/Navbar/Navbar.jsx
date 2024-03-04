@@ -7,7 +7,7 @@ const Navbar = ({ searchQuery, handleSearchChange, filteredEntries, handleSugges
     return (
         <nav id='header'>
             <div className='navbar-container'>
-                <h1> WELCOME {username} ツ</h1>
+                <h1 className='user-block'> ツ Mee Journal {username.charAt(0).toUpperCase()}{username.slice(1)} </h1>
                 <div className='search-container'>
                     <input  
                         type='text'
