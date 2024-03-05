@@ -6,7 +6,7 @@
     position: relative;
     display: flex;
     align-items: center;
-    margin-left: 1130px; /* This will push the search container to the right */
+    margin-left: 135%; /* This will push the search container to the right */
     border: none;
 }
 
@@ -58,4 +58,8 @@ border-radius: 10px;
 
 .user-block {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add a text shadow */
+}
+
+.user-block-container{
+    margin-left: 8% ;
 }
